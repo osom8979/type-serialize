@@ -1,0 +1,61 @@
+{
+    "links": [
+        {
+            "id": 2,
+            "origin_id": 2,
+            "origin_slot": 0,
+            "target_id": 3,
+            "target_slot": 0,
+            "type": null
+        },
+        {
+            "id": 3,
+            "origin_id": 3,
+            "origin_slot": 0,
+            "target_id": 4,
+            "target_slot": 0,
+            "type": null
+        }
+    ],
+    "nodes": [
+        {
+            "dynamicOutputSlot": false,
+            "edge": "",
+            "id": 2,
+            "info": {
+                "category": "cv2",
+                "dependencies": [
+                    {
+                        "src": "numpy",
+                        "type": "pip"
+                    },
+                    {
+                        "src": "opencv-python",
+                        "type": "pip"
+                    }
+                ],
+                "descriptions": {
+                    "en": "Loads",
+                    "ko": "\uc774"
+                },
+                "documentation_mime": "text",
+                "documentations": {},
+                "engines": ">=1.0.2",
+                "environment": {
+                    "name": "cv2",
+                    "type": "pyenv"
+                },
+                "keywords": [
+                    "cv2"
+                ],
+                "meta": {},
+                "name": "cv2_imread",
+                "titles": {
+                    "en": "cv2.imread",
+                    "ko": "cv2.imread"
+                },
+                "version": "1.0.0"
+            }
+        }
+    ]
+}

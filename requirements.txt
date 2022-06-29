@@ -1,0 +1,5 @@
+-r requirements.setup.txt
+-r requirements.test.txt
+numpy
+orjson
+msgpack
