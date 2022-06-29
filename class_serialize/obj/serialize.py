@@ -5,9 +5,9 @@ from enum import Enum
 from typing import Any, Dict, Iterable, List, Mapping, Optional, Tuple
 
 from class_serialize.driver.numpy import HAS_NUMPY, is_ndarray_instance, numpy_serialize
-from class_serialize.errors import SerializeError
 from class_serialize.inspect.member import get_public_instance_attributes
-from class_serialize.utils import (
+from class_serialize.obj.errors import SerializeError
+from class_serialize.obj.utils import (
     MAPPING_METHOD_ITEMS,
     MAPPING_METHOD_KEYS,
     is_serializable_pod_obj,

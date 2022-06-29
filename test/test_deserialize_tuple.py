@@ -3,7 +3,7 @@
 from typing import List, NamedTuple
 from unittest import TestCase, main
 
-from class_serialize.deserialize import deserialize
+from class_serialize.obj.deserialize import deserialize
 
 
 class Sample(NamedTuple):

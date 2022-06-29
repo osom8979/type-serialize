@@ -3,7 +3,7 @@
 from typing import Any, Dict, List, Optional
 from unittest import TestCase, main
 
-from class_serialize.deserialize import deserialize
+from class_serialize.obj.deserialize import deserialize
 
 
 class Sample0:

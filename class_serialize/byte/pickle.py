@@ -3,7 +3,7 @@
 import pickle
 from typing import Any
 
-from class_serialize.variables import (
+from class_serialize.byte.variables import (
     DEFAULT_PICKLE_ENCODING,
     DEFAULT_PICKLE_PROTOCOL_VERSION,
 )

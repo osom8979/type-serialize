@@ -3,7 +3,7 @@
 import os
 from unittest import TestCase, main
 
-from class_serialize.byte_pickle import pickling, unpickling
+from class_serialize.byte.pickle import pickling, unpickling
 
 SAMPLE_JSON_PATH = os.path.join(os.path.dirname(__file__), "sample.json")
 SAMPLE_JSON = open(SAMPLE_JSON_PATH).read()

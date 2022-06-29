@@ -3,7 +3,7 @@
 import os
 from unittest import TestCase, main, skipIf
 
-from class_serialize.byte_msgpack import (
+from class_serialize.byte.msgpack import (
     msgpack_bz2_decoder,
     msgpack_bz2_encoder,
     msgpack_decoder,

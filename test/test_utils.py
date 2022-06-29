@@ -4,7 +4,7 @@ from typing import Optional, get_type_hints
 from unittest import TestCase, main
 
 from class_serialize.inspect.member import get_public_attributes
-from class_serialize.utils import (
+from class_serialize.obj.utils import (
     is_serializable_pod_cls,
     is_serializable_pod_obj,
     normalize_strings,

@@ -4,9 +4,9 @@ from dataclasses import dataclass
 from typing import List, Optional
 from unittest import TestCase, main, skipIf
 
-from class_serialize.deserialize import deserialize
 from class_serialize.driver.numpy import HAS_NUMPY, numpy_deserialize, numpy_serialize
-from class_serialize.serialize import serialize
+from class_serialize.obj.deserialize import deserialize
+from class_serialize.obj.serialize import serialize
 
 
 @skipIf(not HAS_NUMPY, "Not has numpy")

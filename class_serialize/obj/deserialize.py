@@ -26,10 +26,10 @@ from class_serialize.driver.numpy import (
     is_ndarray_subclass,
     numpy_deserialize,
 )
-from class_serialize.errors import DeserializeError
 from class_serialize.inspect.init_signature import required_init_parameters
 from class_serialize.inspect.member import get_public_attributes
-from class_serialize.utils import (
+from class_serialize.obj.errors import DeserializeError
+from class_serialize.obj.utils import (
     MAPPING_METHOD_ITEMS,
     MAPPING_METHOD_KEYS,
     SEQUENCE_METHOD_INSERT,

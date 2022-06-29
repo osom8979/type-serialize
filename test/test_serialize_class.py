@@ -2,7 +2,7 @@
 
 from unittest import TestCase, main
 
-from class_serialize.serialize import serialize
+from class_serialize.obj.serialize import serialize
 
 
 class Sample:

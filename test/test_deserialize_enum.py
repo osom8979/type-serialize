@@ -4,7 +4,7 @@ from enum import Enum
 from typing import List
 from unittest import TestCase, main
 
-from class_serialize.deserialize import deserialize
+from class_serialize.obj.deserialize import deserialize
 
 
 class Sample(Enum):

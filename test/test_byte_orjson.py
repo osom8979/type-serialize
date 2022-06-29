@@ -3,7 +3,7 @@
 import os
 from unittest import TestCase, main, skipIf
 
-from class_serialize.byte_orjson import (
+from class_serialize.byte.orjson import (
     orjson_byte_decoder,
     orjson_byte_encoder,
     orjson_bz2_decoder,
