@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 
-from typing import Any, List, Optional
 from argparse import ArgumentParser, Namespace
+from typing import Any, List, Optional
 
 from type_serialize import __version__ as version
 
@@ -21,6 +21,7 @@ def default_argparse(
     )
 
 
-def main(cmdline: Optional[List[Any]] = None) -> None:
+def main(cmdline: Optional[List[Any]] = None) -> int:
     default_argparse(cmdline)
-    raise NotImplementedError
+    # Not implemented
+    return 0

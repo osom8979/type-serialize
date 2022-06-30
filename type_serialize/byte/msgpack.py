@@ -6,8 +6,8 @@ import lzma
 import zlib
 from typing import Any
 
-from type_serialize.variables import COMPRESS_LEVEL_BEST
 from type_serialize.driver.msgpack import msgpack_decoder, msgpack_encoder
+from type_serialize.variables import COMPRESS_LEVEL_BEST
 
 
 def msgpack_zlib_encoder(data: Any, level=COMPRESS_LEVEL_BEST) -> bytes:

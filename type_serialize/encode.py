@@ -3,8 +3,8 @@
 from typing import Any
 
 from type_serialize.byte.byte_coding import DEFAULT_BYTE_CODING_TYPE, object_to_bytes
-from type_serialize.variables import COMPRESS_LEVEL_TRADEOFF
 from type_serialize.obj.serialize import serialize
+from type_serialize.variables import COMPRESS_LEVEL_TRADEOFF
 
 
 def encode(

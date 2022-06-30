@@ -45,13 +45,13 @@ from type_serialize.byte.pyjson import (
     pyjson_zlib_decoder,
     pyjson_zlib_encoder,
 )
-from type_serialize.variables import COMPRESS_LEVEL_TRADEOFF
 from type_serialize.driver.json import global_json_byte_decoder as json_byte_decoder
 from type_serialize.driver.json import global_json_byte_encoder as json_byte_encoder
 from type_serialize.driver.json import orjson_byte_decoder, orjson_byte_encoder
 from type_serialize.driver.json import python_json_byte_decoder as pyjson_byte_decoder
 from type_serialize.driver.json import python_json_byte_encoder as pyjson_byte_encoder
 from type_serialize.driver.msgpack import msgpack_decoder, msgpack_encoder
+from type_serialize.variables import COMPRESS_LEVEL_TRADEOFF
 
 
 @unique
