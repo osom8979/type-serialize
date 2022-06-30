@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*-
 
+import os
 import json
 from typing import Any, Callable
 
@@ -10,6 +11,8 @@ except ImportError:
 else:
     HAS_ORJSON = True
 
+from type_serialize.conversion.to_boolean import string_to_boolean
+from type_serialize.variables import AUTO_INSTALL_ENV_NAME
 
 JsonByteEncoder = Callable[[Any], bytes]
 JsonByteDecoder = Callable[[bytes], Any]
@@ -80,7 +83,7 @@ def global_json_decoder(data: str) -> Any:
     return _global_json_decoder(data)
 
 
-def _install_orjson_driver():
+def install_orjson_driver():
     global _global_json_byte_encoder
     global _global_json_byte_decoder
     global _global_json_encoder
@@ -92,5 +95,18 @@ def _install_orjson_driver():
     _global_json_decoder = orjson_decoder
 
 
-if HAS_ORJSON:
-    _install_orjson_driver()
+def is_auto_install() -> bool:
+    if not HAS_ORJSON:
+        return False
+    if AUTO_INSTALL_ENV_NAME not in os.environ:
+        return False
+
+    value = os.environ[AUTO_INSTALL_ENV_NAME]
+    if not value:
+        return False
+
+    return string_to_boolean(value)
+
+
+if is_auto_install():
+    install_orjson_driver()

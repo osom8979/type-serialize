@@ -6,7 +6,7 @@ import lzma
 import zlib
 from typing import Any
 
-from type_serialize.byte.variables import COMPRESS_LEVEL_BEST
+from type_serialize.variables import COMPRESS_LEVEL_BEST
 from type_serialize.driver.msgpack import msgpack_decoder, msgpack_encoder
 
 

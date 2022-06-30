@@ -6,7 +6,7 @@ import lzma
 import zlib
 from typing import Any
 
-from type_serialize.byte.variables import COMPRESS_LEVEL_BEST
+from type_serialize.variables import COMPRESS_LEVEL_BEST
 from type_serialize.driver.json import (
     global_json_byte_decoder,
     global_json_byte_encoder,
