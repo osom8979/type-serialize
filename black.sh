@@ -7,5 +7,5 @@ ROOT_DIR=$(cd "$(dirname "${BASH_SOURCE[0]}")" || exit; pwd)
     --diff \
     --color \
     "$ROOT_DIR/setup.py" \
-    "$ROOT_DIR/class_serialize/" \
+    "$ROOT_DIR/type_serialize/" \
     "$ROOT_DIR/test/"

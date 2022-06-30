@@ -68,5 +68,5 @@ fi
 print_message "isort ${ISORT_CHECK_ARGS[*]}"
 "$ROOT_DIR/python" -m isort "${ISORT_CHECK_ARGS[@]}" \
     "$ROOT_DIR/setup.py" \
-    "$ROOT_DIR/class_serialize/" \
+    "$ROOT_DIR/type_serialize/" \
     "$ROOT_DIR/test/"

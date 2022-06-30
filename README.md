@@ -1,3 +1,3 @@
-# class-serialize
+# type-serialize
 
-Easily serialize python class.
+Serialize with type annotations

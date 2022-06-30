@@ -4,7 +4,7 @@ import os
 
 from setuptools import find_packages, setup
 
-PACKAGE_NAME = "class_serialize"
+PACKAGE_NAME = "type_serialize"
 PACKAGE_VERSION = "0.0.1"
 
 SCRIPT_PATH = os.path.abspath(__file__)
