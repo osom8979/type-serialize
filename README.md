@@ -1,5 +1,9 @@
 # type-serialize
 
+![PyPI](https://img.shields.io/pypi/v/type-serialize?style=flat-square)
+![PyPI - Python Version](https://img.shields.io/pypi/pyversions/type-serialize?style=flat-square)
+![GitHub](https://img.shields.io/github/license/osom8979/type-serialize?style=flat-square)
+
 Serialize with type annotations
 
 ## Features
