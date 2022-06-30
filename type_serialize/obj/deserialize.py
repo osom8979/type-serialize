@@ -32,6 +32,7 @@ from type_serialize.inspect.types import (
     MAPPING_METHOD_ITEMS,
     MAPPING_METHOD_KEYS,
     SEQUENCE_METHOD_INSERT,
+    compatible_iterable,
     is_none,
     is_serializable_pod_cls,
 )
@@ -45,31 +46,6 @@ _MS = TypeVar("_MS", bound=MutableSequence)
 
 FIRST_INDEX_KEY_STR = "0"
 DEFAULT_ROOT_KEY = "<root>"
-
-
-def _iterable_compatibility(data: Any) -> bool:
-    assert not isinstance(data, bytes)
-    assert not isinstance(data, bytearray)
-
-    if isinstance(data, Mapping):
-        return False
-    elif isinstance(data, str):
-        return False
-    return isinstance(data, Iterable)
-
-
-def _is_bytes(obj: Any) -> bool:
-    if isinstance(obj, type):
-        return issubclass(obj, bytes)
-    else:
-        return isinstance(obj, bytes)
-
-
-def _is_bytearray(obj: Any) -> bool:
-    if isinstance(obj, type):
-        return issubclass(obj, bytearray)
-    else:
-        return isinstance(obj, bytearray)
 
 
 def _deserialize_mapping_by_keys(
@@ -129,7 +105,7 @@ def _deserialize_mapping_any(
     assert issubclass(cls, MutableMapping)
     if isinstance(data, Mapping):
         return _deserialize_mapping(data, cls, elem_hint)
-    elif _iterable_compatibility(data):
+    elif compatible_iterable(data):
         mapping = {str(i): v for i, v in enumerate(data)}
         return _deserialize_mapping(mapping, cls, elem_hint)
     else:
@@ -160,7 +136,7 @@ def _deserialize_iterable_any(
     elem_hint: Optional[Any] = None,
 ) -> _MS:
     assert issubclass(cls, MutableSequence)
-    if _iterable_compatibility(data):
+    if compatible_iterable(data):
         return _deserialize_iterable(data, cls, elem_hint)
     else:
         return _deserialize_iterable([data], cls, elem_hint)
@@ -336,14 +312,14 @@ def _deserialize_any(
         raise DeserializeError(str(e), key)
 
 
-def _deserialize(data: Any, cls: Type[_T], hint: Optional[Any] = None) -> _T:
+def _deserialize_root(data: Any, cls: Type[_T], hint: Optional[Any] = None) -> _T:
     return _deserialize_any(data, cls, DEFAULT_ROOT_KEY, hint)
 
 
 def deserialize(data: Any, cls_or_hint: Any) -> Any:
     origin = get_origin(cls_or_hint)
     if origin is None:
-        return _deserialize(data, cls_or_hint, None)
+        return _deserialize_root(data, cls_or_hint, None)
     elif origin is Union:
         # Strip the Union hint.
         type_args = get_args(cls_or_hint)
@@ -354,12 +330,12 @@ def deserialize(data: Any, cls_or_hint: Any) -> Any:
         if len(union_types) >= 2:
             raise DeserializeError("Two or more UNION types can not be deduced.")
         assert len(union_types) == 1
-        return _deserialize(data, union_types[0], union_types[0])
+        return _deserialize_root(data, union_types[0], union_types[0])
     elif issubclass(origin, list):
         # maybe typing.List[_V]
-        return _deserialize(data, list, cls_or_hint)
+        return _deserialize_root(data, list, cls_or_hint)
     elif issubclass(origin, dict):
         # maybe typing.Dict[_K, _V]
-        return _deserialize(data, dict, cls_or_hint)
+        return _deserialize_root(data, dict, cls_or_hint)
     else:
         raise TypeError(f"Unsupported origin: {origin.__name__}")
