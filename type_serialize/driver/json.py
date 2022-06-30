@@ -12,7 +12,7 @@ else:
     HAS_ORJSON = True
 
 from type_serialize.conversion.to_boolean import string_to_boolean
-from type_serialize.variables import AUTO_INSTALL_ENV_NAME
+from type_serialize.variables import DISABLE_ORJSON_INSTALL_ENV_NAME
 
 JsonByteEncoder = Callable[[Any], bytes]
 JsonByteDecoder = Callable[[bytes], Any]
@@ -96,16 +96,11 @@ def install_orjson_driver():
 
 
 def is_auto_install() -> bool:
-    if not HAS_ORJSON:
-        return False
-    if AUTO_INSTALL_ENV_NAME not in os.environ:
-        return False
-
-    value = os.environ[AUTO_INSTALL_ENV_NAME]
-    if not value:
-        return False
-
-    return string_to_boolean(value)
+    if DISABLE_ORJSON_INSTALL_ENV_NAME in os.environ:
+        value = os.environ[DISABLE_ORJSON_INSTALL_ENV_NAME]
+        if value and string_to_boolean(value):
+            return False
+    return HAS_ORJSON
 
 
 if is_auto_install():
