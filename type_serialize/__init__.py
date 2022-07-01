@@ -6,7 +6,7 @@ from type_serialize.encode import encode
 from type_serialize.obj.deserialize import deserialize
 from type_serialize.obj.serialize import serialize
 
-__version__ = "1.0.0"
+__version__ = "1.0.1"
 
 __all__ = (
     "__version__",
