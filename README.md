@@ -10,9 +10,40 @@ Serialize with type annotations
 
 - Supported in Python 3.8 and later.
 - Serialize classes without additional code.
+  - Custom classes
+  - [@dataclas](https://docs.python.org/3/library/dataclasses.html#dataclasses.dataclass)
+  - [NamedTuple](https://docs.python.org/3/library/typing.html#typing.NamedTuple)
+  - [Enum](https://docs.python.org/3/library/enum.html#enum.Enum)
+  - (Experimental) [numpy.ndarray](https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy-ndarray)
 - Deserialization using type annotations.
 - Compress serialization results: bz2, gzip, lzma, zlib
 - No dependencies
+
+## Overview
+
+To pass a custom object to the [json.dumps](https://docs.python.org/3/library/json.html#json.dumps) and [json.loads](https://docs.python.org/3/library/json.html#json.loads) functions, there is the following method.
+
+- Expand [json.JSONEncoder](https://docs.python.org/3/library/json.html#json.JSONEncoder) and [json.JSONDecoder](https://docs.python.org/3/library/json.html#json.JSONDecoder).
+- Convert to built-in Python object supported by [json.JSONEncoder](https://docs.python.org/3/library/json.html#json.JSONEncoder) and [json.JSONDecoder](https://docs.python.org/3/library/json.html#json.JSONDecoder).
+
+Both methods require additional code and have some problems.
+
+- Problem of not checking symbols when manipulating strings.
+- When adding/deleting/editing a property, all related codes must be changed together.
+- Painful typecasting (as the biggest problem).
+
+As a way to hide these problems with a library and use serialization and deserialization, I chose **[type annotations](https://docs.python.org/3/library/typing.html)**. (Although the library is complicated; haha...) There are some additional advantages to using this.
+
+- Static type checking using [mypy](https://mypy.readthedocs.io/en/stable/).
+- Autocomplete in IDE like PyCharm.
+
+### Things to know
+
+- All public fields are serialized.
+- Methods are not serialized.
+- Private fields that start with an underscore (`_`) are not serialized.
+- Members specified with the `@property` decorator are not serialized.
+- When deserializing, all fields must be type-annotated.
 
 ## Installation
 
@@ -24,14 +55,6 @@ If you want to add [numpy](https://numpy.org/), [orjson](https://github.com/ijl/
 ```shell
 pip install type-serialize[full]
 ```
-
-## Note
-
-- All public fields are serialized.
-- Methods are not serialized.
-- Private fields that start with an underscore (`_`) are not serialized.
-- Members specified with the `@property` decorator are not serialized.
-- When deserializing, all fields must be type-annotated.
 
 ## Usage
 
@@ -58,6 +81,46 @@ print(obj)
 result = deserialize(obj, Sample)
 assert isinstance(result, Sample)
 assert data == result
+print(result)
+```
+
+### JSON dumps/loads
+
+```python
+from dataclasses import dataclass
+from type_serialize.json import dumps, loads
+
+@dataclass
+class Sample:
+  field1: str
+  field2: int
+
+
+data = Sample(field1="a", field2=100)
+json_data = dumps(data)
+print(json_data)
+
+result = loads(json_data, Sample)
+print(result)
+```
+
+### MsgPack dumps/loads
+
+```python
+from dataclasses import dataclass
+from type_serialize.msgpack import dumps, loads
+
+@dataclass
+class Sample:
+  field1: str
+  field2: int
+
+
+data = Sample(field1="a", field2=100)
+json_data = dumps(data)
+print(json_data)
+
+result = loads(json_data, Sample)
 print(result)
 ```
 
