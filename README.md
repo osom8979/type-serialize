@@ -21,10 +21,15 @@ Serialize with type annotations
 
 ## Overview
 
-To pass a custom object to the [json.dumps](https://docs.python.org/3/library/json.html#json.dumps) and [json.loads](https://docs.python.org/3/library/json.html#json.loads) functions, there is the following method.
+To pass a custom object to the [json.dumps](https://docs.python.org/3/library/json.html#json.dumps)
+and [json.loads](https://docs.python.org/3/library/json.html#json.loads) functions,
+there is the following method.
 
-- Expand [json.JSONEncoder](https://docs.python.org/3/library/json.html#json.JSONEncoder) and [json.JSONDecoder](https://docs.python.org/3/library/json.html#json.JSONDecoder).
-- Convert to built-in Python object supported by [json.JSONEncoder](https://docs.python.org/3/library/json.html#json.JSONEncoder) and [json.JSONDecoder](https://docs.python.org/3/library/json.html#json.JSONDecoder).
+- Expand [json.JSONEncoder](https://docs.python.org/3/library/json.html#json.JSONEncoder)
+  and [json.JSONDecoder](https://docs.python.org/3/library/json.html#json.JSONDecoder).
+- Convert to built-in Python object supported by
+  [json.JSONEncoder](https://docs.python.org/3/library/json.html#json.JSONEncoder) and
+  [json.JSONDecoder](https://docs.python.org/3/library/json.html#json.JSONDecoder).
 
 Both methods require additional code and have some problems.
 
@@ -32,7 +37,9 @@ Both methods require additional code and have some problems.
 - When adding/deleting/editing a property, all related codes must be changed together.
 - Painful typecasting (as the biggest problem).
 
-As a way to hide these problems with a library and use serialization and deserialization, I chose **[type annotations](https://docs.python.org/3/library/typing.html)**. (Although the library is complicated; haha...) There are some additional advantages to using this.
+As a way to hide these problems with a library and use serialization and deserialization,
+I chose **[type annotations](https://docs.python.org/3/library/typing.html)**.
+(Although the library is complicated; haha...) There are some additional advantages to using this.
 
 - Static type checking using [mypy](https://mypy.readthedocs.io/en/stable/).
 - Autocomplete in IDE like PyCharm.
@@ -52,7 +59,8 @@ As a way to hide these problems with a library and use serialization and deseria
 pip install type-serialize
 ```
 
-If you want to add [numpy](https://numpy.org/), [orjson](https://github.com/ijl/orjson), [msgpack](https://msgpack.org/) support:
+If you want to add [numpy](https://numpy.org/), [orjson](https://github.com/ijl/orjson),
+[msgpack](https://msgpack.org/) support:
 ```shell
 pip install type-serialize[full]
 ```
@@ -168,6 +176,9 @@ from type_serialize import ByteCodingType, decode, encode
 
 data = ...
 print(encode(data, coding=ByteCodingType.MsgpackGzip))
+
+encoded_data = ...
+print(decode(encoded_data, coding=ByteCodingType.OrjsonZlib))
 ```
 
 ## orjson support
@@ -178,4 +189,5 @@ To turn off this option, set the `TYPE_SERIALIZE_DISABLE_ORJSON_INSTALL` environ
 
 ## License
 
-See the [LICENSE](./LICENSE) file for details. In summary, tbag is licensed under the **MIT license**.
+See the [LICENSE](./LICENSE) file for details. In summary,
+**type-serialize** is licensed under the **MIT license**.
