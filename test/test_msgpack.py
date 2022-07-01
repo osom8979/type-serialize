@@ -17,7 +17,7 @@ class Sample:
 
 
 @skipIf(not HAS_MSGPACK, "MsgPack module not found")
-class RootMsgpackTestCase(TestCase):
+class MsgpackTestCase(TestCase):
     def test_default(self):
         data = Sample("a", 1, 2.0, True)
         encoded_data = ts_dumps(data)

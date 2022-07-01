@@ -44,6 +44,7 @@ As a way to hide these problems with a library and use serialization and deseria
 - Private fields that start with an underscore (`_`) are not serialized.
 - Members specified with the `@property` decorator are not serialized.
 - When deserializing, all fields must be type-annotated.
+- A value of `None` is ignored by the serialization target.
 
 ## Installation
 

@@ -17,7 +17,7 @@ class Sample:
     value3: bool
 
 
-class RootJsonTestCase(TestCase):
+class JsonTestCase(TestCase):
     def setUp(self):
         data = Sample("a", 1, 2.0, True)
         encoded_data = ts_dumps(data)
