@@ -5,6 +5,7 @@ from typing import List
 from unittest import TestCase, main
 
 from type_serialize.obj.deserialize import deserialize
+from type_serialize.obj.serialize import serialize
 
 
 class Sample(Enum):
@@ -13,9 +14,22 @@ class Sample(Enum):
     Value2 = 2
 
 
-class DeserializeEnumTestCase(TestCase):
+class EnumTestCase(TestCase):
     def test_enum(self):
-        result = deserialize([0, 1, 2], List[Sample])
+        data = serialize(Sample.Value0)
+        self.assertIsInstance(data, int)
+        self.assertEqual(0, data)
+
+        result = deserialize(data, Sample)
+        self.assertIsInstance(result, Sample)
+        self.assertEqual(result, Sample.Value0)
+
+    def test_enum_list(self):
+        data = serialize([Sample.Value0, Sample.Value1, Sample.Value2])
+        self.assertIsInstance(data, list)
+        self.assertListEqual([0, 1, 2], data)
+
+        result = deserialize(data, List[Sample])
         self.assertIsInstance(result, list)
         self.assertEqual(3, len(result))
         self.assertIsInstance(result[0], Sample)

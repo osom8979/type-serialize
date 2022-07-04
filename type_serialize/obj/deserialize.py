@@ -37,6 +37,7 @@ from type_serialize.inspect.types import (
     is_serializable_pod_cls,
 )
 from type_serialize.obj.errors import DeserializeError
+from type_serialize.obj.interface import DESERIALIZE_METHOD_NAME, is_deserialize_cls
 
 _T = TypeVar("_T")
 _K = TypeVar("_K")
@@ -46,6 +47,12 @@ _MS = TypeVar("_MS", bound=MutableSequence)
 
 FIRST_INDEX_KEY_STR = "0"
 DEFAULT_ROOT_KEY = "<root>"
+
+
+def _deserialize_interface(data: Any, cls: Type[_T]) -> _T:
+    result = cls()
+    getattr(result, DESERIALIZE_METHOD_NAME)(data)
+    return result
 
 
 def _deserialize_mapping_by_keys(
@@ -205,6 +212,8 @@ def _deserialize_any(
             return bytes(data)
         elif issubclass(type_origin, bytearray):
             return bytearray(data)
+        elif is_deserialize_cls(type_origin):
+            return _deserialize_interface(data, type_origin)
         elif is_serializable_pod_cls(type_origin):
             return type_origin(data)
         elif issubclass(type_origin, MutableMapping):
@@ -279,6 +288,8 @@ def _deserialize_any(
                 return cls(data)
             elif issubclass(cls, tuple):
                 return cls(*data)
+            elif is_deserialize_cls(cls):
+                return _deserialize_interface(data, cls)
             elif issubclass(cls, MutableMapping):
                 return _deserialize_mapping_any(data, cls)
             elif issubclass(cls, MutableSequence):
@@ -316,11 +327,19 @@ def _deserialize_root(data: Any, cls: Type[_T], hint: Optional[Any] = None) -> _
     return _deserialize_any(data, cls, DEFAULT_ROOT_KEY, hint)
 
 
-def deserialize(data: Any, cls_or_hint: Any) -> Any:
-    origin = get_origin(cls_or_hint)
-    if origin is None:
-        return _deserialize_root(data, cls_or_hint, None)
-    elif origin is Union:
+def deserialize(data: Any, cls_or_hint: Optional[Any] = None) -> Any:
+    if cls_or_hint is None:
+        origin = get_origin(type(data))
+        if origin is None:
+            return _deserialize_root(data, type(data))
+    else:
+        origin = get_origin(cls_or_hint)
+        if origin is None:
+            return _deserialize_root(data, cls_or_hint)
+
+    assert origin is not None
+
+    if origin is Union:
         # Strip the Union hint.
         type_args = get_args(cls_or_hint)
         union_types = list(type_args)
@@ -331,6 +350,7 @@ def deserialize(data: Any, cls_or_hint: Any) -> Any:
             raise DeserializeError("Two or more UNION types can not be deduced.")
         assert len(union_types) == 1
         return _deserialize_root(data, union_types[0], union_types[0])
+
     elif issubclass(origin, list):
         # maybe typing.List[_V]
         return _deserialize_root(data, list, cls_or_hint)

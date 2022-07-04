@@ -52,6 +52,9 @@ I chose **[type annotations](https://docs.python.org/3/library/typing.html)**.
 - Members specified with the `@property` decorator are not serialized.
 - When deserializing, all fields must be type-annotated.
 - A value of `None` is ignored by the serialization target.
+- When deserializing, the `__init__` function must have **NO** required arguments.
+- Implement `__serialize__` to override the serialization method.
+- Implement `__deserialize__` to override the deserialization method.
 
 ## Installation
 
@@ -61,6 +64,7 @@ pip install type-serialize
 
 If you want to add [numpy](https://numpy.org/), [orjson](https://github.com/ijl/orjson),
 [msgpack](https://msgpack.org/) support:
+
 ```shell
 pip install type-serialize[full]
 ```
@@ -93,6 +97,39 @@ assert data == result
 print(result)
 ```
 
+### Override serialize and deserialize
+
+```python
+from dataclasses import dataclass
+from type_serialize import deserialize, serialize
+
+
+@dataclass
+class Sample:
+    value: int
+
+    def __serialize__(self):
+        return {"a": self.value}
+
+    def __deserialize__(self, data) -> None:
+        self.value = data["a"]
+
+    def __init__(self, value=100):
+        self.value = value
+
+
+test = Sample(value=200)
+obj = serialize(test)
+assert isinstance(obj, dict)
+assert obj["a"] == 200
+print(obj)
+
+result = deserialize(obj, Sample)
+assert isinstance(result, Sample)
+assert test == result
+print(result)
+```
+
 ### JSON dumps/loads
 
 ```python
@@ -101,8 +138,8 @@ from type_serialize.json import dumps, loads
 
 @dataclass
 class Sample:
-  field1: str
-  field2: int
+    field1: str
+    field2: int
 
 
 data = Sample(field1="a", field2=100)
@@ -121,8 +158,8 @@ from type_serialize.msgpack import dumps, loads
 
 @dataclass
 class Sample:
-  field1: str
-  field2: int
+    field1: str
+    field2: int
 
 
 data = Sample(field1="a", field2=100)

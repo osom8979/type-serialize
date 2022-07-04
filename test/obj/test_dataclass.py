@@ -5,6 +5,7 @@ from typing import Dict, List, Optional
 from unittest import TestCase, main
 
 from type_serialize.obj.deserialize import deserialize
+from type_serialize.obj.serialize import serialize
 
 
 @dataclass
@@ -12,9 +13,22 @@ class Sample:
     test1: str
     test2: Optional[str] = None
 
+    @property
+    def test3(self):
+        assert self
+        return 30
 
-class DeserializeDataclassTestCase(TestCase):
+    def test4(self):
+        assert self
+        return 40
+
+
+class DataclassTestCase(TestCase):
     def test_dataclass(self):
+        test = Sample(test1="aa")
+        data = serialize(test)
+        self.assertEqual({"test1": "aa"}, data)
+
         result = deserialize({"test1": "aa"}, Sample)
         self.assertIsInstance(result, Sample)
 

@@ -15,10 +15,9 @@ class Sample:
         pass
 
 
-class DeserializeHintTestCase(TestCase):
+class HintTestCase(TestCase):
     def test_hint(self):
-        data = [{"a": 2}]
-        result = deserialize(data, Optional[List[Sample]])
+        result = deserialize([{"a": 2}], Optional[List[Sample]])
         self.assertIsInstance(result, list)
         self.assertEqual(1, len(result))
         self.assertEqual(2, result[0].a)

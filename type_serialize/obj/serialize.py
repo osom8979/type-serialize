@@ -12,6 +12,7 @@ from type_serialize.inspect.types import (
     is_serializable_pod_obj,
 )
 from type_serialize.obj.errors import SerializeError
+from type_serialize.obj.interface import SERIALIZE_METHOD_NAME, is_serialize_obj
 
 
 def _create_serialize_dict(items: Iterable[Tuple[str, Any]]) -> Dict[str, Any]:
@@ -25,6 +26,10 @@ def _create_serialize_dict(items: Iterable[Tuple[str, Any]]) -> Dict[str, Any]:
             continue
         result[key] = serialize_value
     return result
+
+
+def _serialize_interface(obj: Any) -> Any:
+    return getattr(obj, SERIALIZE_METHOD_NAME)()
 
 
 def _serialize_mapping(obj: Mapping) -> Dict[str, Any]:
@@ -72,6 +77,8 @@ def _serialize_any(obj: Any, key: Optional[str] = None) -> Any:
             return obj.isoformat()
         elif isinstance(obj, Enum):
             return obj.value
+        elif is_serialize_obj(obj):
+            return _serialize_interface(obj)
         elif is_serializable_pod_obj(obj):
             return obj
         elif isinstance(obj, Mapping):
