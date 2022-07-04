@@ -208,14 +208,15 @@ print(result)
 ```
 
 The encoding format can be adjusted with the `coding` argument.
+
 ```python
-from type_serialize import ByteCodingType, decode, encode
+from type_serialize import ByteCoding, decode, encode
 
 data = ...
-print(encode(data, coding=ByteCodingType.MsgpackGzip))
+print(encode(data, coding=ByteCoding.MsgpackGzip))
 
 encoded_data = ...
-print(decode(encoded_data, coding=ByteCodingType.OrjsonZlib))
+print(decode(encoded_data, coding=ByteCoding.OrjsonZlib))
 ```
 
 ## orjson support

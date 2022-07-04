@@ -2,7 +2,7 @@
 
 from typing import Any, Optional
 
-from type_serialize.byte.byte_coding import DEFAULT_BYTE_CODING_TYPE, bytes_to_object
+from type_serialize.byte.byte_coder import DEFAULT_BYTE_CODING_TYPE, bytes_to_object
 from type_serialize.obj.deserialize import deserialize
 
 
