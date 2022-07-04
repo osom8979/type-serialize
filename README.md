@@ -63,7 +63,7 @@ pip install type-serialize
 ```
 
 If you want to add [numpy](https://numpy.org/), [orjson](https://github.com/ijl/orjson),
-[msgpack](https://msgpack.org/) support:
+[msgpack](https://msgpack.org/), [pyyaml](https://pyyaml.org/) support:
 
 ```shell
 pip install type-serialize[full]

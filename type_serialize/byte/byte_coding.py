@@ -45,12 +45,23 @@ from type_serialize.byte.pyjson import (
     pyjson_zlib_decoder,
     pyjson_zlib_encoder,
 )
+from type_serialize.byte.yaml import (
+    yaml_bz2_decoder,
+    yaml_bz2_encoder,
+    yaml_gzip_decoder,
+    yaml_gzip_encoder,
+    yaml_lzma_decoder,
+    yaml_lzma_encoder,
+    yaml_zlib_decoder,
+    yaml_zlib_encoder,
+)
 from type_serialize.driver.json import global_json_byte_decoder as json_byte_decoder
 from type_serialize.driver.json import global_json_byte_encoder as json_byte_encoder
 from type_serialize.driver.json import orjson_byte_decoder, orjson_byte_encoder
 from type_serialize.driver.json import python_json_byte_decoder as pyjson_byte_decoder
 from type_serialize.driver.json import python_json_byte_encoder as pyjson_byte_encoder
 from type_serialize.driver.msgpack import msgpack_decoder, msgpack_encoder
+from type_serialize.driver.yaml import yaml_decoder, yaml_encoder
 from type_serialize.variables import COMPRESS_LEVEL_TRADEOFF
 
 
@@ -86,6 +97,13 @@ class ByteCodingType(Enum):
     MsgpackGzip = 19
     MsgpackLzma = 20
     MsgpackBz2 = 21
+
+    # pyyaml module
+    Yaml = 22
+    YamlZlib = 23
+    YamlGzip = 24
+    YamlLzma = 25
+    YamlBz2 = 26
 
 
 ObjectToBytesCallable = Callable[..., bytes]
@@ -139,6 +157,11 @@ _BYTE_CODING_MAP: Final[Dict[ByteCodingType, _ByteCoding]] = {
     ByteCodingType.MsgpackGzip: _ByteCoding(msgpack_gzip_encoder, msgpack_gzip_decoder),
     ByteCodingType.MsgpackLzma: _ByteCoding(msgpack_lzma_encoder, msgpack_lzma_decoder),
     ByteCodingType.MsgpackBz2: _ByteCoding(msgpack_bz2_encoder, msgpack_bz2_decoder),
+    ByteCodingType.Yaml: _ByteCoding(yaml_encoder, yaml_decoder),
+    ByteCodingType.YamlZlib: _ByteCoding(yaml_zlib_encoder, yaml_zlib_decoder),
+    ByteCodingType.YamlGzip: _ByteCoding(yaml_gzip_encoder, yaml_gzip_decoder),
+    ByteCodingType.YamlLzma: _ByteCoding(yaml_lzma_encoder, yaml_lzma_decoder),
+    ByteCodingType.YamlBz2: _ByteCoding(yaml_bz2_encoder, yaml_bz2_decoder),
 }
 
 DEFAULT_BYTE_CODING_TYPE: Final[ByteCodingType] = ByteCodingType.JsonGzip
