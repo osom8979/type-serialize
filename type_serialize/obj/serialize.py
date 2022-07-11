@@ -15,10 +15,9 @@ from type_serialize.obj.errors import SerializeError
 from type_serialize.obj.interface import SERIALIZE_METHOD_NAME, is_serialize_obj
 
 
-def _create_serialize_dict(items: Iterable[Tuple[str, Any]]) -> Dict[str, Any]:
-    result: Dict[str, Any] = dict()
+def _create_serialize_dict(items: Iterable[Tuple[Any, Any]]) -> Dict[Any, Any]:
+    result: Dict[Any, Any] = dict()
     for key, val in items:
-        assert isinstance(key, str)
         if val is None:
             continue
         serialize_value = _serialize_any(val, key)
@@ -32,7 +31,7 @@ def _serialize_interface(obj: Any) -> Any:
     return getattr(obj, SERIALIZE_METHOD_NAME)()
 
 
-def _serialize_mapping(obj: Mapping) -> Dict[str, Any]:
+def _serialize_mapping(obj: Mapping) -> Dict[Any, Any]:
     items: List[Tuple[str, Any]]
     if hasattr(obj, MAPPING_METHOD_ITEMS):
         items_func = getattr(obj, MAPPING_METHOD_ITEMS)
@@ -48,7 +47,7 @@ def _serialize_mapping(obj: Mapping) -> Dict[str, Any]:
 def _serialize_iterable(obj: Iterable) -> List[Any]:
     result: List[Any] = list()
     for i, item in enumerate(obj):
-        serialize_value = _serialize_any(item, f"[{i}]")
+        serialize_value = _serialize_any(item, i)
         if serialize_value is None:
             continue
         result.append(serialize_value)
@@ -59,7 +58,7 @@ def _serialize_common(obj: Any) -> Dict[str, Any]:
     return _create_serialize_dict(get_public_instance_attributes(obj))
 
 
-def _serialize_any(obj: Any, key: Optional[str] = None) -> Any:
+def _serialize_any(obj: Any, key: Optional[Any] = None) -> Any:
     try:
         if obj is None:
             return None

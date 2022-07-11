@@ -230,6 +230,10 @@ def _deserialize_any(
         # Deduced by class.
 
         if not is_none(cls) and cls is not Any:
+            cls_origin = get_origin(cls)
+            if cls_origin is not None:
+                return _deserialize_any(data, cls_origin, key, cls)
+
             # [IMPORTANT]
             # Do not change if-else order (Reason: `issubclass(bool, int) == True`)
             if issubclass(cls, bytes):
@@ -320,7 +324,7 @@ def _deserialize_any(
         e.insert_first(key)
         raise
     except BaseException as e:
-        raise DeserializeError(str(e), key)
+        raise DeserializeError(str(e), key) from e
 
 
 def _deserialize_root(data: Any, cls: Type[_T], hint: Optional[Any] = None) -> _T:
