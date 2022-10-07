@@ -1,8 +1,8 @@
 # type-serialize
 
-![![PyPI](https://img.shields.io/pypi/v/type-serialize?style=flat-square)](https://pypi.org/project/type-serialize/)
+[![PyPI](https://img.shields.io/pypi/v/type-serialize?style=flat-square)](https://pypi.org/project/type-serialize/)
 ![PyPI - Python Version](https://img.shields.io/pypi/pyversions/type-serialize?style=flat-square)
-![![GitHub](https://img.shields.io/github/license/osom8979/type-serialize?style=flat-square)](https://github.com/osom8979/type-serialize)
+[![GitHub](https://img.shields.io/github/license/osom8979/type-serialize?style=flat-square)](https://github.com/osom8979/type-serialize)
 
 Serialize with type annotations
 
