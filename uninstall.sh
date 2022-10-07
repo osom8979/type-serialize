@@ -2,4 +2,4 @@
 
 ROOT_DIR=$(cd "$(dirname "${BASH_SOURCE[0]}")" || exit; pwd)
 
-"$ROOT_DIR/python" -m pip uninstall type_serialize
+"$ROOT_DIR/python" -m pip uninstall type-serialize

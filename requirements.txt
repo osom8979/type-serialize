@@ -1,5 +1,3 @@
--r requirements.setup.txt
+-r requirements.deploy.txt
+-r requirements.main.txt
 -r requirements.test.txt
-numpy
-orjson
-msgpack

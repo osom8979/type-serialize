@@ -130,3 +130,7 @@ MANIFEST
 ######################
 ### asynctasks.vim ###
 .tasks
+
+###############
+### Project ###
+.venv/
