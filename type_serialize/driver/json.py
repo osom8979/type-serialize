@@ -11,7 +11,7 @@ except ImportError:
 else:
     HAS_ORJSON = True
 
-from type_serialize.conversion.to_boolean import string_to_boolean
+from type_serialize.types.string.to_boolean import string_to_boolean
 from type_serialize.variables import DISABLE_ORJSON_INSTALL_ENV_NAME
 
 JsonByteEncoder = Callable[[Any], bytes]

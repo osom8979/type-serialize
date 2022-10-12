@@ -2,7 +2,7 @@
 
 from typing import Any
 
-from type_serialize.conversion.to_boolean import string_to_boolean
+from type_serialize.types.string.to_boolean import string_to_boolean
 
 
 def string_to_any(data: str, cls: Any) -> Any:
