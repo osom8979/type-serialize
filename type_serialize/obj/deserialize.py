@@ -38,6 +38,7 @@ from type_serialize.inspect.types import (
 )
 from type_serialize.obj.errors import DeserializeError
 from type_serialize.obj.interface import DESERIALIZE_METHOD_NAME, is_deserialize_cls
+from type_serialize.types.string.to_boolean import string_to_boolean
 
 _T = TypeVar("_T")
 _K = TypeVar("_K")
@@ -241,7 +242,10 @@ def _deserialize_any(
             elif issubclass(cls, bytearray):
                 return bytearray(data)
             elif issubclass(cls, bool):
-                return bool(data)
+                if isinstance(data, str):
+                    return string_to_boolean(data)
+                else:
+                    return bool(data)
             elif issubclass(cls, int):
                 return int(data)
             elif issubclass(cls, float):
