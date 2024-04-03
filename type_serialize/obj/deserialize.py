@@ -295,7 +295,7 @@ def _deserialize_any(
             elif issubclass(cls, Enum):
                 return cls(data)
             elif issubclass(cls, tuple):
-                return cls(*data)
+                return cls(data)
             elif is_deserialize_cls(cls):
                 return _deserialize_interface(data, cls)
             elif issubclass(cls, MutableMapping):
