@@ -11,6 +11,7 @@ permissions:
 jobs:
   deploy:
     runs-on: ubuntu-latest
+    environment: pypi-deploy
 
     steps:
       - name: checkout
