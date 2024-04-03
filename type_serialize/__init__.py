@@ -7,7 +7,7 @@ from type_serialize.obj.deserialize import deserialize
 from type_serialize.obj.interface import Serializable
 from type_serialize.obj.serialize import serialize
 
-__version__ = "1.2.4"
+__version__ = "1.2.5"
 
 __all__ = (
     "__version__",
