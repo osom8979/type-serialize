@@ -8,12 +8,18 @@ from type_serialize.driver.numpy import HAS_NUMPY, numpy_deserialize, numpy_seri
 from type_serialize.obj.deserialize import deserialize
 from type_serialize.obj.serialize import serialize
 
+if HAS_NUMPY:
+    import numpy as np
+
+    @dataclass
+    class Sample:
+        test1: str
+        test2: Optional[List[np.ndarray]] = None
+
 
 @skipIf(not HAS_NUMPY, "Not has numpy")
 class NumpyTestCase(TestCase):
     def test_numpy_serialize(self):
-        import numpy as np
-
         image = np.random.randint(0, 255, size=(1270, 1920, 3), dtype=np.uint8)
         self.assertEqual((1270, 1920, 3), image.shape)
         self.assertEqual(np.uint8, image.dtype)
@@ -22,8 +28,6 @@ class NumpyTestCase(TestCase):
         self.assertTrue((result == image).all())
 
     def test_numpy_serialize_tuple(self):
-        import numpy as np
-
         image = np.random.randint(0, 255, size=(1270, 1920, 3), dtype=np.uint8)
         self.assertEqual((1270, 1920, 3), image.shape)
         self.assertEqual(np.uint8, image.dtype)
@@ -32,13 +36,6 @@ class NumpyTestCase(TestCase):
         self.assertTrue((result == image).all())
 
     def test_default(self):
-        import numpy as np
-
-        @dataclass
-        class Sample:
-            test1: str
-            test2: Optional[List[np.ndarray]] = None
-
         array0 = np.random.rand(10, 20, 30)
         array1 = np.random.randint(0, 255, size=(1270, 1920, 3), dtype=np.uint8)
         test_data = Sample("test1", [array0, array1])

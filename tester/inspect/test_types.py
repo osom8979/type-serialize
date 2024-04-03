@@ -1,10 +1,12 @@
 # -*- coding: utf-8 -*-
 
-from typing import Optional, get_type_hints
+from dataclasses import dataclass
+from typing import NamedTuple, Optional, get_type_hints
 from unittest import TestCase, main
 
 from type_serialize.inspect.member import get_public_attributes
 from type_serialize.inspect.types import (
+    is_namedtuple_instance,
     is_serializable_pod_cls,
     is_serializable_pod_obj,
 )
@@ -18,7 +20,6 @@ class Sample1:
 
 
 class Sample2:
-
     _protected: str
     test: Optional[Sample1]
     name: Optional[str]
@@ -27,6 +28,15 @@ class Sample2:
         self._protected = "protected"
         self.test = test
         self.name = name
+
+
+@dataclass
+class TestDataClass:
+    test: int
+
+
+class TestNamedTuple(NamedTuple):
+    test: int
 
 
 class TypesTestCase(TestCase):
@@ -75,6 +85,22 @@ class TypesTestCase(TestCase):
         hint2 = get_type_hints(Sample2)
         self.assertEqual(0, len(hint1))
         self.assertEqual(3, len(hint2))
+
+    def test_is_namedtuple_subclass(self):
+        self.assertFalse(is_namedtuple_instance(self))
+        self.assertFalse(is_namedtuple_instance(Sample1()))
+        self.assertFalse(is_namedtuple_instance(Sample2()))
+        self.assertFalse(is_namedtuple_instance(0))
+        self.assertFalse(is_namedtuple_instance(0.0))
+        self.assertFalse(is_namedtuple_instance(True))
+        self.assertFalse(is_namedtuple_instance("0"))
+        self.assertFalse(is_namedtuple_instance(tuple([0, 1])))
+        self.assertFalse(is_namedtuple_instance((0, 1)))
+        self.assertFalse(is_namedtuple_instance([0, 1]))
+        self.assertFalse(is_namedtuple_instance({0, 1}))
+        self.assertFalse(is_namedtuple_instance({0: 1}))
+        self.assertFalse(is_namedtuple_instance(TestDataClass(0)))
+        self.assertTrue(is_namedtuple_instance(TestNamedTuple(0)))
 
 
 if __name__ == "__main__":

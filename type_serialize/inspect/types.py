@@ -40,6 +40,23 @@ def is_bytearray(obj: Any) -> bool:
         return isinstance(obj, bytearray)
 
 
+def is_namedtuple_subclass(cls: type) -> bool:
+    bases = cls.__bases__
+    assert isinstance(bases, tuple)
+    if len(bases) != 1 or bases[0] != tuple:
+        return False
+
+    fields = getattr(cls, "_fields", None)
+    if not isinstance(fields, tuple):
+        return False
+
+    return all(isinstance(n, str) for n in fields)
+
+
+def is_namedtuple_instance(obj: Any) -> bool:
+    return is_namedtuple_subclass(type(obj))
+
+
 def compatible_iterable(data: Any) -> bool:
     assert not isinstance(data, bytes)
     assert not isinstance(data, bytearray)

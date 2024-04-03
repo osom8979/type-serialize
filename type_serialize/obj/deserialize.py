@@ -33,6 +33,7 @@ from type_serialize.inspect.types import (
     MAPPING_METHOD_KEYS,
     SEQUENCE_METHOD_INSERT,
     compatible_iterable,
+    is_namedtuple_subclass,
     is_none,
     is_serializable_pod_cls,
 )
@@ -295,7 +296,13 @@ def _deserialize_any(
             elif issubclass(cls, Enum):
                 return cls(data)
             elif issubclass(cls, tuple):
-                return cls(data)
+                if is_namedtuple_subclass(cls):
+                    return cls(*data)
+                else:
+                    if isinstance(data, Iterable):
+                        return cls(data)
+                    else:
+                        return cls([data])
             elif is_deserialize_cls(cls):
                 return _deserialize_interface(data, cls)
             elif issubclass(cls, MutableMapping):
