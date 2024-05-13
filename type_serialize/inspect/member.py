@@ -30,10 +30,28 @@ def get_public_attributes(data: Any) -> List[Tuple[str, Any]]:
     return list(filter(lambda x: is_public_member(x[0]), attributes))
 
 
+def get_public_methods(data: Any) -> List[Tuple[str, Any]]:
+    if isinstance(data, Mapping):
+        return [(str(k), v) for k, v in data.items()]
+    if isinstance(data, Iterable):
+        return [(str(i), v) for i, v in enumerate(data)]
+    attributes = getmembers(data, lambda a: isroutine(a))
+    return list(filter(lambda x: is_public_member(x[0]), attributes))
+
+
 def get_public_instance_attributes(data: Any) -> List[Tuple[str, Any]]:
     if isinstance(data, Mapping):
         return [(str(k), v) for k, v in data.items()]
     if isinstance(data, Iterable):
         return [(str(i), v) for i, v in enumerate(data)]
     attributes = getmembers(data, lambda a: not isroutine(a))
+    return list(filter(lambda x: is_instance_public_member(data, x[0]), attributes))
+
+
+def get_public_instance_methods(data: Any) -> List[Tuple[str, Any]]:
+    if isinstance(data, Mapping):
+        return [(str(k), v) for k, v in data.items()]
+    if isinstance(data, Iterable):
+        return [(str(i), v) for i, v in enumerate(data)]
+    attributes = getmembers(data, lambda a: isroutine(a))
     return list(filter(lambda x: is_instance_public_member(data, x[0]), attributes))
