@@ -35,6 +35,7 @@ from type_serialize.inspect.types import (
     compatible_iterable,
     is_namedtuple_subclass,
     is_none,
+    is_protocol,
     is_serializable_pod_cls,
 )
 from type_serialize.obj.errors import DeserializeError
@@ -55,6 +56,38 @@ def _deserialize_interface(data: Any, cls: Type[_T]) -> _T:
     result = cls()
     getattr(result, DESERIALIZE_METHOD_NAME)(data)
     return result
+
+
+_TYPING_INTERNALS = ['__parameters__', '__orig_bases__',  '__orig_class__',
+                     '_is_protocol', '_is_runtime_protocol', '__final__']
+
+_SPECIAL_NAMES = ['__abstractmethods__', '__annotations__', '__dict__', '__doc__',
+                  '__init__', '__module__', '__new__', '__slots__',
+                  '__subclasshook__', '__weakref__', '__class_getitem__']
+
+EXCLUDED_ATTRIBUTES = _TYPING_INTERNALS + _SPECIAL_NAMES + ['_MutableMapping__marker']
+
+
+def _get_protocol_attrs(cls):
+    """Collect protocol members from a protocol class objects.
+
+    This includes names actually defined in the class dictionary, as well
+    as names that appear in annotations. Special names (above) are skipped.
+    """
+    attrs = set()
+    for base in cls.__mro__[:-1]:  # without object
+        if base.__name__ in ('Protocol', 'Generic'):
+            continue
+        annotations = getattr(base, '__annotations__', {})
+        for attr in list(base.__dict__.keys()) + list(annotations.keys()):
+            if not attr.startswith('_abc_') and attr not in EXCLUDED_ATTRIBUTES:
+                attrs.add(attr)
+    return attrs
+
+
+def _is_callable_members_only(cls):
+    # PEP 544 prohibits using issubclass() with protocols that have non-method members.
+    return all(callable(getattr(cls, attr, None)) for attr in _get_protocol_attrs(cls))
 
 
 def _deserialize_mapping_by_keys(
@@ -311,6 +344,11 @@ def _deserialize_any(
                 return _deserialize_iterable_any(data, cls)
             elif is_dataclass(cls):
                 return _deserialize_dataclass(data, cls)
+            elif is_protocol(cls):
+                if isinstance(data, Iterable):
+                    return _deserialize_iterable(data, list)
+                else:
+                    return _deserialize_object(data, object)
             elif isclass(cls):
                 if required_init_parameters(cls):
                     return _deserialize_dataclass(data, cls)

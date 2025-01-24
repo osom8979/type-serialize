@@ -7,6 +7,12 @@ MAPPING_METHOD_KEYS: Final[str] = "keys"
 SEQUENCE_METHOD_INSERT: Final[str] = "insert"
 
 
+def is_protocol(cls: Any) -> bool:
+    if not isinstance(cls, type):
+        return False
+    return getattr(cls, "__is_protocol__", False) or getattr(cls, "_is_protocol", False)
+
+
 def is_serializable_pod_cls(cls: Any) -> bool:
     if not isinstance(cls, type):
         return False
