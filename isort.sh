@@ -26,9 +26,7 @@ function print_message
     echo -e "\033[32m$@\033[0m"
 }
 
-trap 'cancel_black' INT
-
-function cancel_black
+function on_interrupt_trap
 {
     print_error "An interrupt signal was detected."
     exit 1
@@ -38,6 +36,8 @@ function print_usage
 {
     echo "$USAGE"
 }
+
+trap on_interrupt_trap INT
 
 while [[ -n $1 ]]; do
     case $1 in
