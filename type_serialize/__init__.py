@@ -4,7 +4,7 @@ from type_serialize.deserialize import deserialize
 from type_serialize.interface import Serializable
 from type_serialize.serialize import serialize
 
-__version__ = "2.0.2"
+__version__ = "2.0.3"
 
 __all__ = (
     "__version__",
