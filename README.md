@@ -8,7 +8,7 @@ Serialize with type annotations
 
 ## Features
 
-- Supported in Python 3.8 and later.
+- Supported in Python 3.9 and later.
 - Serialize classes without additional code.
   - Custom classes
   - [@dataclas](https://docs.python.org/3/library/dataclasses.html#dataclasses.dataclass)
