@@ -31,6 +31,8 @@ class DataclassTestCase(TestCase):
 
         result = deserialize({"test1": "aa"}, Sample)
         self.assertIsInstance(result, Sample)
+        self.assertEqual("aa", result.test1)
+        self.assertIsNone(result.test2)
 
     def test_dataclass_list(self):
         result = deserialize([{"test1": "aa"}], List[Sample])

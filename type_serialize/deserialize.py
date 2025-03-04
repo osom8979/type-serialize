@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-from dataclasses import is_dataclass
+from dataclasses import MISSING, fields, is_dataclass
 from datetime import date, datetime, time
 from enum import Enum
 from inspect import isclass
@@ -173,8 +173,27 @@ def _deserialize_data_to_dict(data: Any, cls: Type[_T]) -> Dict[str, Any]:
 
 def _deserialize_dataclass(data: Any, cls: Type[_T]) -> _T:
     result = cls.__new__(cls)
+
     for key, val in _deserialize_data_to_dict(data, cls).items():
         setattr(result, key, val)
+
+    for field in fields(cls):  # type: ignore[arg-type]
+        if hasattr(result, field.name):
+            continue
+
+        if field.default is not MISSING and field.default_factory is not MISSING:
+            raise ValueError("'default' and 'default_factory' cannot coexist")
+
+        if field.default is not MISSING:
+            assert field.default_factory is MISSING
+            setattr(result, field.name, field.default)
+        elif field.default_factory is not MISSING:
+            assert field.default is MISSING
+            setattr(result, field.name, field.default_factory())
+        else:
+            assert field.default is MISSING
+            assert field.default_factory is MISSING
+
     return result
 
 
